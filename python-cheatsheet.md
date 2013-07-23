@@ -71,7 +71,12 @@
     def chdir_to_path(self, path):
         oldwd = os.getcwd()
         os.chdir(path)
-        yield
+        try:
+            yield
+        except:
+            os.chdir(oldwd)
+            raise
+
         os.chdir(oldwd)
     
     def foo(self):
