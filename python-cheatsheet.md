@@ -214,4 +214,11 @@ with
 
     python -c 'import macholib.MachO, uuid, sys; binary = macholib.MachO.MachO(sys.argv[1]); uuid_command, = [c[1] for c in binary.headers[0].commands if type(c[1]) == macholib.mach_o.uuid_command]; print uuid.UUID(bytes=uuid_command.uuid)' /Applications/Foo.app/Contents/MacOS/Foo
 
+or
 
+    python - /Applications/Foo.app/Contents/MacOS/Foo <<-EOF
+        import macholib.MachO, uuid, sys
+        binary = macholib.MachO.MachO(sys.argv[1])
+        uuid_command, = [c[1] for c in binary.headers[0].commands if type(c[1]) == macholib.mach_o.uuid_command]
+        print uuid.UUID(bytes=uuid_command.uuid)
+    EOF
