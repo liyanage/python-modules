@@ -84,6 +84,23 @@
             foo
 
 
+# Logging
+
+## Basic Logging Setup
+
+    import logging
+    logging.basicConfig(level=logging.DEBUG)
+    
+    logging.debug('foo')
+    logging.warning('foo')
+    logging.error('foo')
+
+Based on args:
+
+    if self.args.verbose:
+        logging.basicConfig(level=logging.DEBUG)
+
+
 # Files
 
 ## Slurp File Contents
@@ -95,6 +112,10 @@
 
     for (dirpath, dirnames, filenames) in os.walk(args.root_path, topdown=True):
         ...
+
+## Get directory contents
+
+    contents = os.listdir(path)
 
 
 # Autopep
