@@ -64,6 +64,24 @@
     status = subprocess.check_call(['git', 'status', '--porcelain', self.path])
     output = subprocess.check_output(['git', 'status', '--porcelain', self.path])
 
+## sudo authenticate
+
+    def validate_sudo():
+        pwd = ''
+        for i in range(5):
+            sp = subprocess.Popen(['sudo', '-S', '-v'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            sp.communicate(pwd + '\n')
+            if sp.returncode == 0:
+                return True
+            pwd = getpass.getpass()
+        return False
+
+## relaunch with sudo
+
+    def ensure_superuser(cls):
+        if os.getuid() != 0:
+            print 'Relaunching with sudo...'
+            os.execv('/usr/bin/sudo', ['/usr/bin/sudo'] + sys.argv)
 
 # Context Manager for `with` Statement
 
