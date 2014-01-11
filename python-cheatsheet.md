@@ -16,6 +16,14 @@
     def foo(self, bar):
         return super(MyClass, self).foo(bar)
 
+# HTTP
+
+## HEAD request
+
+    request = urllib2.Request(url)
+    request.get_method = lambda : 'HEAD'
+    response = urllib2.urlopen(request)
+    print response.info()['Last-Modified']
 
 # Installing Modules
 
@@ -29,7 +37,7 @@
     http://fonnesbeck.github.com/ScipySuperpack/
 
 
-# Time
+# Date/Time
 
 ## Sleep
 
@@ -42,6 +50,14 @@
     t2 = datetime.datetime.now()
     print '{:0.1f}s'.format((t2 - t1).total_seconds())
 
+## Convert RFC-style date/time to datetime
+
+    modification_time = datetime.datetime(*email.utils.parsedate(urllib2_response.info()['Last-Modified'])[:6])
+
+## Touch file modification with datetime
+
+    timestamp = time.mktime(some_datetime.timetuple())
+    os.utime(file_path, (timestamp, timestamp))
 
 # Exceptions
 
@@ -182,6 +198,12 @@ http://docs.python.org/2/tutorial/datastructures.html#the-del-statement
 
     for k, v in globals().items():
         ...
+
+
+# Version Number Sorting
+
+    versions = [tuple(map(int, (i.split('.')))) for i in version_strings]
+    sorted(versions, cmp)
 
 
 # Dictionary get with fallback
