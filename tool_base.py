@@ -133,12 +133,19 @@ class AbstractSubcommand(object):
     def subcommand_name(cls):
         return '-'.join([i.lower() for i in re.findall(r'([A-Z][a-z]+)', re.sub(r'^Subcommand', '', cls.__name__))])
 
+    @classmethod
+    def subclass_map(cls):
+        map = {c.__name__: c for c in cls.__subclasses__()}
+        for subclass in map.values():
+            map.update(subclass.subclass_map())
+        return map
+
 
 class Tool(object):
     """Description for usage message"""
 
     def subcommand_map(self):
-        return {subclass.subcommand_name(): subclass for subclass in AbstractSubcommand.__subclasses__()}
+        return {subclass.subcommand_name(): subclass for subclass in AbstractSubcommand.subclass_map()}
 
     def resolve_subcommand_abbreviation(self, subcommand_map):
         non_option_arguments = [i for i in sys.argv[1:] if not i.startswith('-')]
