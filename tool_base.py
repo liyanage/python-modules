@@ -145,7 +145,7 @@ class Tool(object):
     """Description for usage message"""
 
     def subcommand_map(self):
-        return {subclass.subcommand_name(): subclass for subclass in AbstractSubcommand.subclass_map()}
+        return {subclass.subcommand_name(): subclass for subclass in AbstractSubcommand.subclass_map().values()}
 
     def resolve_subcommand_abbreviation(self, subcommand_map):
         non_option_arguments = [i for i in sys.argv[1:] if not i.startswith('-')]
