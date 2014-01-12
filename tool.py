@@ -97,13 +97,8 @@ class AbstractSubcommand(object):
         return '-'.join([i.lower() for i in re.findall(r'([A-Z][a-z]+)', re.sub(r'^Subcommand', '', cls.__name__))])
 
 
-class SubcommandExample(AbstractSubcommand):
-    
-    def run(self):
-        print 'Hello world'
-
-
 class Tool(object):
+    """Description for usage message"""
 
     def subcommand_map(self):
         return {subclass.subcommand_name(): subclass for subclass in AbstractSubcommand.__subclasses__()}
@@ -149,13 +144,17 @@ class Tool(object):
         decorated_name += trailing
         return SubcommandCandidate(subcommand_name, decorated_name)
 
+    def configure_argument_parser(self, parser):
+        pass
+        #parser.add_argument('--some_global_option', help='Description')
+
     def run(self):
         subcommand_map = self.subcommand_map()
         if not self.resolve_subcommand_abbreviation(subcommand_map):
             exit(1)
     
-        parser = argparse.ArgumentParser(description='Description')
-        parser.add_argument('--some_global_option', help='Description')
+        parser = argparse.ArgumentParser(description=self.__doc__)
+        self.configure_argument_parser(parser)
         parser.add_argument('-v', '--verbose', action='store_true', help='Enable verbose debug logging')
         subparsers = parser.add_subparsers(title='Subcommands', dest='subcommand_name')
         for subcommand_name, subcommand_class in subcommand_map.items():
@@ -174,5 +173,26 @@ class Tool(object):
         tool = cls()
         tool.run()
 
+
+
+
+class FooTool(Tool):
+    """Describe Foo Tool"""
+    
+    pass
+    
+
+class SubcommandBar(AbstractSubcommand):
+    """List build settings that are defined in a project file, either at the project or target level."""
+    
+    def run(self):
+        print 'Hello world'
+
+    @classmethod
+    def configure_argument_parser(cls, parser):
+        parser.add_argument('path', help='Path to some file')
+        parser.add_argument('-o', '--option', action='store_true', help='Some option')
+
+
 if __name__ == "__main__":
-    Tool.main()
+    FooTool.main()
