@@ -144,7 +144,7 @@ Based on args:
 
 ## Walking File System Trees
 
-    for (dirpath, dirnames, filenames) in os.walk(args.root_path, topdown=True):
+    for dirpath, dirnames, filenames in os.walk(path, topdown=True):
         ...
 
 ## Get directory contents
