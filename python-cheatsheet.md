@@ -15,6 +15,16 @@
 
     def foo(self, bar):
         return super(MyClass, self).foo(bar)
+        
+## Recursive Subclass Map
+
+    @classmethod
+    def subclass_map(cls):
+        map = {c.__name__: c for c in cls.__subclasses__()}
+        for subclass in map.values():
+            map.update(subclass.subclass_map())
+        return map
+
 
 # HTTP
 
@@ -182,9 +192,19 @@ Based on args:
     re.sub(r'pattern', replace, string)
 
 
-# Split string into lines
+# String Manipulations
+
+## Split string into lines
 
     str.splitlines()
+
+## Convert camel case to underscore
+
+    def underscore_to_camel_case(underscore_value):
+        return re.sub(r'(\w)_(\w)', lambda match: match.group(1) + match.group(2).upper(), underscore_value)
+
+    def camel_case_to_underscore(camelcase_value):
+        return re.sub(r'([a-z])([A-Z])', lambda match: match.group(1) + '_' + match.group(2).lower(), camelcase_value)
 
 
 # Empty a list in-place
