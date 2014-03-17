@@ -218,24 +218,22 @@ class Tool(object):
         tool.run()
 
 
-
-
-class FooTool(Tool):
-    """Describe Foo Tool"""
-
-    pass
-
-
-class SubcommandBar(AbstractSubcommand):
-    """List build settings that are defined in a project file, either at the project or target level."""
-
-    def run(self):
-        print 'Hello world'
-
-    @classmethod
-    def configure_argument_parser(cls, parser):
-        parser.add_argument('path', help='Path to some file')
-        parser.add_argument('-o', '--option', action='store_true', help='Some option')
+# class FooTool(Tool):
+#     """Describe Foo Tool"""
+# 
+#     pass
+# 
+# 
+# class SubcommandBar(AbstractSubcommand):
+#     """List build settings that are defined in a project file, either at the project or target level."""
+# 
+#     def run(self):
+#         print 'Hello world'
+# 
+#     @classmethod
+#     def configure_argument_parser(cls, parser):
+#         parser.add_argument('path', help='Path to some file')
+#         parser.add_argument('-o', '--option', action='store_true', help='Some option')
 
 
 if __name__ == "__main__":
