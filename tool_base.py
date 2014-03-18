@@ -9,7 +9,7 @@
 #
 # In a larger project, you might want to maintain your tool subclass in
 # a separate file and keep this tool_base.py file unchanged so you can
-# easily update to never upstream versions. In that case, your subclass
+# easily update to newer upstream versions. In that case, your subclass
 # file would look something like this:
 #
 #     #!/usr/bin/env python

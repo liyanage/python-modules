@@ -53,6 +53,10 @@
 
     time.sleep(seconds)
 
+## Now
+
+    dt = datetime.datetime.now()
+
 ## Time some code
 
     t1 = datetime.datetime.now()
@@ -68,6 +72,10 @@
 
     timestamp = time.mktime(some_datetime.timetuple())
     os.utime(file_path, (timestamp, timestamp))
+
+## Human Readable Timestamp
+
+    datetime.datetime.now().strftime('%Y%m%d-%H%M%S')
 
 # Exceptions
 
@@ -104,6 +112,7 @@
 
 ## relaunch with sudo
 
+    @classmethod
     def ensure_superuser(cls):
         if os.getuid() != 0:
             print 'Relaunching with sudo...'
@@ -260,6 +269,22 @@ http://docs.python.org/2/tutorial/datastructures.html#the-del-statement
 # Get file system path to current file
 
     os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+
+# Plist parsing with plistlib
+
+    data = plistlib.readPlistFromString(stdoutdata)
+
+# XML with ElementTree
+
+    import xml.etree.ElementTree
+
+## Parse File
+
+    tree = xml.etree.ElementTree.parse(path)
+    
+## Parse String
+
+    tree = xml.etree.ElementTree.fromstring(xml_string)
 
 # PyObjc
 
