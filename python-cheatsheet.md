@@ -73,6 +73,10 @@
     timestamp = time.mktime(some_datetime.timetuple())
     os.utime(file_path, (timestamp, timestamp))
 
+## Get file modification timestamp as datetime
+
+    datetime.fromtimestamp(os.stat(path).st_mtime)
+
 ## Human Readable Timestamp
 
     datetime.datetime.now().strftime('%Y%m%d-%H%M%S')
@@ -215,6 +219,11 @@ Based on args:
     def camel_case_to_underscore(camelcase_value):
         return re.sub(r'([a-z])([A-Z])', lambda match: match.group(1) + '_' + match.group(2).lower(), camelcase_value)
 
+# String Formatting
+
+## Parameter-defined, fixed-width placeholder
+
+    'foo [{1:<{0}}] bar'.format(field_width, value)
 
 # Empty a list in-place
 
