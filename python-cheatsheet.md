@@ -238,6 +238,12 @@ http://docs.python.org/2/tutorial/datastructures.html#the-del-statement
         ...
 
 
+# Iterate over a collection with an index
+
+    for index, item in enumerate(iterable):
+        ...
+
+
 # Version Number Sorting
 
     versions = [tuple(map(int, (i.split('.')))) for i in version_strings]

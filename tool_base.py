@@ -147,12 +147,16 @@ class Tool(object):
     def subcommand_map(self):
         return {s.subcommand_name(): s for s in AbstractSubcommand.subclass_map().values() if s.__name__.startswith('Subcommand')}
 
-    def resolve_subcommand_abbreviation(self, subcommand_map):
+    def find_subcommand_in_arguments(self, arguments):
         non_option_arguments = [i for i in sys.argv[1:] if not i.startswith('-')]
         if not non_option_arguments:
-            return True
+            return None
+        return non_option_arguments[0]
 
-        subcommand = non_option_arguments[0]
+    def resolve_subcommand_abbreviation(self, subcommand_map):
+        subcommand = self.find_subcommand_in_arguments(sys.argv[1:])
+        if not subcommand:
+            return True
         if subcommand in subcommand_map.keys():
             return True
 
