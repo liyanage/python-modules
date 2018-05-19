@@ -30,7 +30,10 @@ class AbstractSubcommand(object):
         return '-'.join([i.lower() for i in re.findall(r'([A-Z][a-z]+)', re.sub(r'^Subcommand', '', cls.__name__))])
 
 
-class SubcommandExample(AbstractSubcommand):
+class SubcommandReport(AbstractSubcommand):
+
+
+class SubcommandAnalyze(AbstractSubcommand):
     """
     Usage/Documentation for this subcommand
     """

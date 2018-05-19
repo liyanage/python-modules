@@ -35,12 +35,21 @@
     response = urllib2.urlopen(request)
     print response.info()['Last-Modified']
 
+## Slurp page
+
+    url = 'http://www.sno.phy.queensu.ca/~phil/exiftool/'
+    request = urllib2.Request(url)
+    response = urllib2.urlopen(request)
+    data = response.read()
+
 # Installing Modules
 
 ## PIP
 
     http://www.pip-installer.org/en/latest/installing.html
     curl https://raw.github.com/pypa/pip/master/contrib/get-pip.py | sudo python
+    
+    sudo -H python -m ensurepip
 
 ## SciPy
 
@@ -67,6 +76,10 @@
 ## Convert RFC-style date/time to datetime
 
     modification_time = datetime.datetime(*email.utils.parsedate(urllib2_response.info()['Last-Modified'])[:6])
+    
+## Convert ISO timestamp to datetime
+
+    datetime.datetime.strptime("2008-09-03T20:56:35.450686Z", "%Y-%m-%dT%H:%M:%S.%fZ")
 
 ## Touch file modification with datetime
 
@@ -75,11 +88,35 @@
 
 ## Get file modification timestamp as datetime
 
-    datetime.fromtimestamp(os.stat(path).st_mtime)
+    datetime.datetime.fromtimestamp(os.stat(path).st_mtime)
+
+## Time delta between datetimes
+
+    t1 = datetime.datetime.now()
+    ...
+    age_seconds = (datetime.datetime.now() - t1).seconds
 
 ## Human Readable Timestamp
 
     datetime.datetime.now().strftime('%Y%m%d-%H%M%S')
+
+## Datetime instance to Unix Timestamp
+
+    import datetime
+    date = datetime.datetime.utcfromtimestamp(0)
+
+    def unix_time_millis(dt):
+        return (dt - epoch).total_seconds() * 1000.0
+
+## Unix timestamp to UTC and Local Time
+
+    import datetime
+    utcdatetime = datetime.datetime.utcfromtimestamp(unix_timestamp)
+    localdatetime = datetime.datetime.fromtimestamp(unix_timestamp)
+
+## Get Computer's UTC Offset
+
+    http://stackoverflow.com/a/3168394/182781
 
 # Exceptions
 
@@ -221,6 +258,10 @@ Based on args:
 
 # String Formatting
 
+## Fixed-width aligned placeholder
+
+    'foo [{:<5}] bar'.format(value)
+
 ## Parameter-defined, fixed-width placeholder
 
     'foo [{1:<{0}}] bar'.format(field_width, value)
@@ -249,6 +290,11 @@ http://docs.python.org/2/tutorial/datastructures.html#the-del-statement
     versions = [tuple(map(int, (i.split('.')))) for i in version_strings]
     sorted(versions, cmp)
 
+Support in pkg_resources (http://stackoverflow.com/questions/11887762/compare-version-strings):
+
+    import pkg_resources
+    pkg_resources.parse_version('1.2.3') < pkg_resources.parse_version('4.5.6')
+
 
 # Dictionary get with fallback
 
@@ -271,7 +317,13 @@ http://docs.python.org/2/tutorial/datastructures.html#the-del-statement
 ## Decode Hex Chars
 
     'cafebabe'.decode('hex')
+    binascii.unhexlify('cafebabe')
+    binascii.a2b_hex('cafebabe')
 
+## Encode Hex Chars
+
+    binascii.b2a_hex(binary)
+    binascii.hexlify(binary)
 
 # Shell Script Inline Python script
 
@@ -343,3 +395,9 @@ or
         uuid_command, = [c[1] for c in binary.headers[0].commands if type(c[1]) == macholib.mach_o.uuid_command]
         print uuid.UUID(bytes=uuid_command.uuid)
     EOF
+
+# C API
+
+## Print description of an object in an embedded Python 3 interpreter when attached with LLDB:
+
+    call (char *)PyUnicode_AsUTF8((void *)PyObject_Repr($arg2))

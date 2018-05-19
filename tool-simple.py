@@ -6,6 +6,11 @@
 # Maintained at https://github.com/liyanage/python-modules
 #
 
+from __future__ import absolute_import
+from __future__ import unicode_literals
+from __future__ import division
+from __future__ import print_function
+
 import sys
 import os
 import re
@@ -19,12 +24,12 @@ class Tool(object):
         self.args = args
 
     def run(self):
-        print self.args.some_path
+        print(self.args.path)
 
     @classmethod
     def main(cls):
         parser = argparse.ArgumentParser(description='Description')
-        parser.add_argument('some_path', help='Path to something')
+        parser.add_argument('path', help='Path to something')
         parser.add_argument('-v', '--verbose', action='store_true', help='Enable verbose debug logging')
 
         args = parser.parse_args()

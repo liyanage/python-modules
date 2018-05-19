@@ -132,6 +132,10 @@ class AbstractSubcommand(object):
     @classmethod
     def subcommand_name(cls):
         return '-'.join([i.lower() for i in re.findall(r'([A-Z][a-z]+)', re.sub(r'^Subcommand', '', cls.__name__))])
+    
+    @classmethod
+    def requires_superuser(cls):
+        return False
 
     @classmethod
     def subclass_map(cls):
@@ -192,9 +196,15 @@ class Tool(object):
         decorated_name += trailing
         return SubcommandCandidate(subcommand_name, decorated_name)
 
-    def configure_argument_parser(self, parser):
+    @classmethod
+    def configure_argument_parser(cls, parser):
         pass
         #parser.add_argument('--some_global_option', help='Description')
+
+    def ensure_superuser(cls):
+        if os.getuid() != 0:
+            print 'Relaunching with sudo...'
+            os.execv('/usr/bin/sudo', ['/usr/bin/sudo'] + sys.argv)
 
     def run(self):
         subcommand_map = self.subcommand_map()
@@ -214,6 +224,10 @@ class Tool(object):
             logging.basicConfig(level=logging.DEBUG)
 
         subcommand_class = subcommand_map[args.subcommand_name]
+        
+        if subcommand_class.requires_superuser():
+            self.ensure_superuser()
+        
         subcommand_class(args).run()
 
     @classmethod
